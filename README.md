@@ -4,6 +4,7 @@
 
 ### Installation
 Uncomment the following line in `docker-compose.yml` if you want to seed the database.
+
 `- ./resources/mysql/seed/news.sql:/docker-entrypoint-initdb.d/news.sql`
 
 ```

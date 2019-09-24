@@ -1,0 +1,10 @@
+[client]
+port            = 3307
+[mysqld]
+port            = 3307
+max_allowed_packet = 1024M
+skip-host-cache
+skip-name-resolve
+[mysqld_safe]
+skip_log_error
+syslog

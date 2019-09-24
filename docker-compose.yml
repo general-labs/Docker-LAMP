@@ -1,0 +1,42 @@
+# ./docker-compose.yml
+
+version: '3'
+
+services:
+  mysql:
+    container_name: mysql
+    image: mariadb:10.3
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo_user
+      MYSQL_USER: demo_user
+      MYSQL_PASSWORD: 11111
+    ports:
+      - "3307:3307"
+    volumes:
+      - .:/container-volume
+      - ./resources/mysql/data-volume/:/var/lib/mysql
+      - ./resources/mysql/conf/:/etc/mysql/conf.d/
+      #- ./resources/mysql/seed/news.sql:/docker-entrypoint-initdb.d/news.sql
+  lamp_container:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lamp_container
+    depends_on:
+      - mysql
+    links:
+      - 'mysql'
+    volumes:
+      #- ./php/:/var/www/html
+      - ./php/docroot/:/var/www/html/
+      #- ./php/docroot/:/var/www/html/docroot
+      #- ./resources/apache/:/etc/apache2/sites-available
+      #- ./resources/php/:/usr/local/etc/php/conf.d
+    ports:
+      - "8100:80"
+    environment:
+      - EH_ENV=production
+      - DATABASE_HOST=mysql
+    stdin_open: true
+    tty: true
